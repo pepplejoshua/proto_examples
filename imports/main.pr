@@ -1,0 +1,12 @@
+// imports a file
+fn main() -> i64 {
+    use funcs::[adders::[Time, time, add_i64], indexers::index];
+    use imported::sums::[add, concat_c, concat_s];
+    let arr = [1, 2, 3, 4];
+    mut sum = 0;
+    for mut i = 0; i < 4; i += 1 {
+        sum += index(arr, i);
+    }
+    let my_time: Time = Time { HID: 1 };
+    sum + time.HID + my_time.HID
+}

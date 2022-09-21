@@ -1,0 +1,33 @@
+fn variad_sum(nums: ...i64) -> i64 {
+    mut sum = 0;
+    for i in nums {
+        sum += i;
+    }
+    sum
+}
+fn variad_concat[T: str, char](items: ...T) -> str {
+    mut concat = ""
+    for i in items {
+        concat += i;
+    }
+    concat
+}
+
+fn generic_add[T: Addable](l: T, r: T) -> T {
+    l + r
+}
+// OR
+fn generic_add<T: Addable>(l: T, r: T) -> T {
+    l + r
+}
+
+fn main() -> i64 {
+    let nums = [1, 1, 1];
+    let sum = variad_sum(nums...); // sum is 3
+    // concat is "my name is Joshua Pepple"
+    let concat = variad_concat("my name", ' ', "is Joshua ", 'P', "epple");
+    let args = ("my name", ' ', "is Joshua ", 'P', "epple")
+    // concat is still "my name is Joshua Pepple"
+    concat = variad_concat(args...);
+    variad_sum(2, 2, 2) // returns 6
+}   

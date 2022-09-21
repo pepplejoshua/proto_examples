@@ -1,0 +1,32 @@
+use board::Board;
+use msg::Msg;
+
+let win_rules = [
+    // diagonals
+    [0, 4, 8], [2, 4, 6],
+
+    // horizontals
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+
+    // verticals
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+];
+
+fn game_over(board: Board) -> Msg {
+    for mut i = 0; i < 8; i += 1 {
+        let rule = win_rules[i];
+        let a = rule[0];
+        let b = rule[1];
+        let c = rule[2];
+
+        let ch_a = board.Arr[a];
+        let ch_b = board.Arr[b];
+        let ch_c = board.Arr[c];
+        if ch_a == ch_b && ch_b == ch_c && ch_a != ' ' {
+            return Msg { won: true, winner: ch_a };
+        } else {
+            continue;
+        }
+    }
+    Msg { won: false, winner: ' ' }
+}

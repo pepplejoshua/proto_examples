@@ -1,0 +1,20 @@
+struct Name {
+    first_name: str,
+    last_name: str,
+}
+fn set_name(name: &Name) {
+    name.first_name = "Joshua";
+    name.last_name = "Pepple";
+
+fn show_name(name: &Name, tag: str) {
+    cpp {
+        cout << tag + ":" << endl;
+        cout << "  " << name.first_name << " " << name.last_name << endl;
+    }
+}
+fn main() {
+    mut name = Name { first_name: "Chidera", last_name: "Igbokwe" };
+    show_name(&name, "Before change");
+    set_name(&name);
+    show_name(&name, "After change");
+}

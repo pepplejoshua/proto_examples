@@ -1,0 +1,7 @@
+fn index(arr: [i64], index: i64) -> i64 {
+    arr[index]
+}
+
+fn index_s(string: str, index: i64) -> char {
+    string[index]
+}
