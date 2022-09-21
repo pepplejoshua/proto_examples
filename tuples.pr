@@ -1,0 +1,13 @@
+struct Test {
+    n: i64,
+    b: bool,
+}
+fn test_tuples() -> (i64, char, Test) {
+    let val = Test { n: 1, b: true };
+    (300, 'z', val)
+}
+
+fn main() -> bool {
+    let a = test_tuples();
+    a.2.b
+}
