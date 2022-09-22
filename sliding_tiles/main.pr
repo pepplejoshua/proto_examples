@@ -1,17 +1,56 @@
 use board_tiles::BoardTile;
 use solver::*;
 
-fn main() {
-    mut start = "123405786";
-    mut goal = "123456780";
-
+fn display_heading(size: i64) {
+    #include <iomanip>
     cpp {
-        cout << "Solving " << start << "." << endl;
+        cout << "Solving " << size << " puzzles..." << endl;
+        cout << left << setw(3) << "No."
+            << right << setw(12) << "Start Board"
+            << right << setw(20) << "Goal Board"
+            << right << setw(23) << "Number of Moves"
+            << right << setw(17) << "Solution" << endl;
+        cout << endl;
     }
+}
 
-    mut solver = make_solver(start, goal);
-    mut end = solve(&solver);
+fn display_output(index: i64, init: str, goal: str, solution: BoardTile) {
     cpp {
-        cout << end << endl;
+        cout << left << setw(4) << to_string(index) + '.'
+            << left << setw(21) << init
+            << left << setw(16) << goal
+            << right << setw(6) << num_of_moves(solution)
+            << left << setw(20) << " "
+            << left << setw(50) << get_solution(solution) << endl;
+        cout << endl;
+    }
+}
+
+fn main() {
+    mut inits = [
+         "123405786",
+        "123745086",
+        "123480765",
+        "512630478",
+        "126350478",
+        "356148072",
+        "436871052",
+        "302651478",
+        "012345678",
+    ];
+    
+    mut size = 0;
+    cpp {
+        size = inits.size();
+    }
+    display_heading(size);
+
+    mut count = 1;
+    mut goal = "123456780";
+    for init in inits {
+        mut solver = make_solver(init, goal);
+        mut end = solve(&solver);
+        display_output(count, init, goal, end);
+        count += 1;
     }
 }
