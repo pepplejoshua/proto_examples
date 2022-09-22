@@ -1,0 +1,15 @@
+struct Test {
+    a: i64,
+}
+
+struct Nested {
+    t: Test,
+    d: str,
+}
+
+fn main() -> Nested {
+    let t = Test { a: 300 };
+    let d: str = "a string";
+    let n = Nested { d, t };
+    n
+}
