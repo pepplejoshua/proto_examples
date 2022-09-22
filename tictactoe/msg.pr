@@ -1,4 +1,0 @@
-struct Msg {
-    won: bool,
-    winner: char,
-}

@@ -1,5 +1,0 @@
-use long_cut;
-
-fn test() -> char {
-    'c'
-}

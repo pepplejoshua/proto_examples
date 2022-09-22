@@ -1,5 +1,0 @@
-use #cpp core
-
-fn main() {
-    println()
-}

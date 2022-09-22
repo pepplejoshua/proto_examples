@@ -1,4 +1,0 @@
-struct Board {
-    Arr: [char],
-    RowSize: i64,
-}
