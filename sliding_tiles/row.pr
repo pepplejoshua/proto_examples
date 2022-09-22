@@ -1,0 +1,30 @@
+use utils::[append, len];
+
+struct Row {
+    chars: [char],
+}
+
+fn add_to_row(r: &Row, c: char) {
+    append(&r.chars, c);
+}
+
+fn show_row(r: &Row) {
+    for c in r.chars {
+        cpp {
+            cout << c << " ";
+        }
+    }
+    cpp {
+        cout << endl;
+    }
+}
+
+fn get_col(r: &Row, c: char) -> i64 {
+    for mut i = 0; i < len(r.chars); i += 1 {
+        mut ch = r.chars[i];
+        if ch == c {
+            return i;
+        }
+    }
+    return -1;
+}

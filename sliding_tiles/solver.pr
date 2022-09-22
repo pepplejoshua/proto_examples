@@ -1,0 +1,63 @@
+#include "set_queue.hpp"
+use board_tiles::*;
+
+struct Solver {
+    start: BoardTile,
+    goal: BoardTile,
+}
+
+fn make_solver(init: str, end: str) -> Solver {
+    mut start = make_boardtile_s(init);
+    mut goal = make_boardtile_s(end);
+    Solver { start, goal }
+}
+
+fn solve(s: &Solver) -> BoardTile {
+    mut goal_tmp = s.goal;
+
+    cpp {
+        auto comp = [&goal_tmp](BoardTile l, BoardTile r) {
+            int lhs = num_of_moves(l) + manhattan_distance(l, goal_tmp);
+            int rhs = num_of_moves(r) + manhattan_distance(r, goal_tmp);
+            return lhs <= rhs;
+        };
+
+        SetQueue<BoardTile, decltype(comp)> queue(comp);
+        queue.push(s.start);
+    }
+
+    mut best: BoardTile = s.start;
+    while true {
+        cpp {
+            best = queue.top();
+        }
+
+        if manhattan_distance(&best, &s.goal) == 0 {
+            return best;
+        }
+
+        cpp {
+            queue.pop();
+        }
+
+        mut configs = next_config(&best);
+        for mut i = 0; i < len_b(&configs); i += 1 {
+            mut config = configs[i];
+            cpp {
+                auto find = [&queue](BoardTile config) {
+                    for (auto c : queue) {
+                        if (is_eq(c, config)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                auto seen = find(config);
+                if (!seen) {
+                    queue.push(config);
+                }
+            }
+        }
+    }
+    s.start
+}

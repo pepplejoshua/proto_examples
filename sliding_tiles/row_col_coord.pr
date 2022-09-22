@@ -1,0 +1,20 @@
+struct RowColCoord {
+    row: i64,
+    col: i64,
+}
+
+fn count_moves_to(rc: &RowColCoord, other: &RowColCoord) -> i64 {
+    mut count = 0;
+    if rc.row > other.row {
+        count += rc.row - other.row;
+    } else {
+        count += other.row - rc.row;
+    }
+
+    if rc.col > other.col {
+        count += rc.col - other.col;
+    } else {
+        count += other.col - rc.col;
+    }
+    count
+}

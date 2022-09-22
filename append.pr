@@ -1,0 +1,15 @@
+use sliding_tiles::utils::append;
+
+fn main() {
+    mut a = [char;];
+
+    for mut i = 0; i < 5; i += 1 {
+        append(&a, 'a');
+    }
+
+    for c in a {
+        cpp {
+            cout << c << endl;
+        }
+    }
+}

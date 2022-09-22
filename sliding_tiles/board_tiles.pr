@@ -1,0 +1,157 @@
+use row::*;
+use row_col_coord::*;
+use utils::*;
+
+struct BoardTile {
+    repr: str,
+    movesMade: str,
+    rows: [Row],
+}
+
+fn len_b(arr: &[BoardTile]) -> i64 {
+    mut length = 0;
+    cpp {
+        length = arr.size();
+    }
+    return length;
+}
+
+fn append_r(arr: &[Row], r: Row) {
+    cpp {
+        arr.push_back(r);
+    }
+}
+
+fn append_b(arr: &[BoardTile], b: BoardTile) {
+    cpp {
+        arr.push_back(b);
+    }
+}
+
+fn make_boardtile_s(s: str) -> BoardTile {
+    mut b = BoardTile { repr: s, movesMade: "", rows: [Row;]};
+    cpp {
+        assert(s.size() % 3 == 0);
+    }
+    for mut i = 0; i < len_s(s); i += 3 {
+        mut r = Row { chars: [s[i], s[i+1], s[i+2]] };
+        append_r(&(b.rows), r);
+    }
+    b
+}
+
+fn make_boardtile(s: str, moves: str) -> BoardTile {
+    mut b = make_boardtile_s(s);
+    b.movesMade = moves;
+    b
+}
+
+fn find_char(repr: str, c: char) -> i64 {
+    for mut i = 0; len_s(repr) > i; i += 1 {
+        if repr[i] == c {
+            return i;
+        }
+    }
+    return -1;
+}
+
+fn generate_by_swapping(original: str, index_a: i64, index_b: i64) -> str {
+    mut temp = original[index_a];
+    original[index_a] = original[index_b];
+    original[index_b] = temp;
+    original
+}
+
+fn is_eq(a: &BoardTile, b: &BoardTile) -> bool {
+    a.repr == b.repr
+}
+
+fn get_solution(b: &BoardTile) -> str {
+    b.movesMade
+}
+
+fn get_config(b: &BoardTile) -> str {
+    b.repr
+}
+
+fn find_char_in_rows(b: &BoardTile, c: char) -> RowColCoord {
+    mut rows = b.rows;
+    mut coord = RowColCoord { row: -1, col: -1 };
+    for mut i = 0; i < 3; i += 1 {
+        mut r = rows[i];
+        mut col = get_col(&r, c);
+        if col != -1 {
+            coord.row = i;
+            coord.col = col;
+            break;
+        }
+    }
+    return coord;
+}
+
+fn num_of_moves(r: &BoardTile) -> i64 {
+    len_s(r.movesMade)
+}
+
+fn manhattan_distance(b: &BoardTile, goal_config: &BoardTile) -> i64 {
+    mut total = 0;
+    for c in b.repr {
+        if c != '0' {
+            mut r_coord = find_char_in_rows(b, c);
+            mut g_coord = find_char_in_rows(goal_config, c);
+
+            mut count = count_moves_to(&r_coord, &g_coord);
+            total += count;
+        }
+    }
+    total
+}
+
+fn display(b: &BoardTile) {
+    cpp {
+        cout << "Moves made so far: " << b.movesMade 
+        << " (" << num_of_moves(b) << " moves)" << endl;
+    }
+    for r in b.rows {
+        show_row(&r);
+    }
+    cpp {
+        cout << endl;
+    }
+}
+
+fn next_config(b: &BoardTile) -> [BoardTile] {
+    mut new_tiles = [BoardTile;];
+
+    mut blank = find_char(b.repr, '0');
+
+    // make left move variation
+    if blank % 3 != 0 {
+        mut left = generate_by_swapping(b.repr, blank-1, blank);
+        mut tile = make_boardtile(left, b.movesMade + 'L');
+        append_b(&new_tiles, tile);
+    }
+
+    // make right move variation
+    if (blank + 1) % 3 != 0 {
+        mut right = generate_by_swapping(b.repr, blank, blank+1);
+        mut tile = make_boardtile(right, b.movesMade + 'R');
+        append_b(&new_tiles, tile);
+    }
+
+    // make up move variation
+    if (blank - 3) >= 0 {
+        mut up = generate_by_swapping(b.repr, blank-3, blank);
+        mut tile = make_boardtile(up, b.movesMade + 'U');
+        append_b(&new_tiles, tile);
+    }
+
+    // make down move variation
+    if (blank + 3) < len_s(b.repr) {
+        mut down = generate_by_swapping(b.repr, blank, blank+3);
+        mut tile = make_boardtile(down, b.movesMade + 'D');
+        append_b(&new_tiles, tile);
+    }
+
+    new_tiles
+}

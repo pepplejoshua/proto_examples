@@ -1,0 +1,17 @@
+use board_tiles::BoardTile;
+use solver::*;
+
+fn main() {
+    mut start = "123405786";
+    mut goal = "123456780";
+
+    cpp {
+        cout << "Solving " << start << "." << endl;
+    }
+
+    mut solver = make_solver(start, goal);
+    mut end = solve(&solver);
+    cpp {
+        cout << end << endl;
+    }
+}

@@ -1,2 +1,5 @@
 *.cpp
 *.hpp
+!set_queue.hpp
+.DS_Store
+settings.json

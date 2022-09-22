@@ -1,0 +1,21 @@
+fn append(arr: &[char], c: char) {
+    cpp {
+        arr.push_back(c);
+    }
+}
+
+fn len(arr: &[char]) -> i64 {
+    mut length = 0;
+    cpp {
+        length = arr.size();
+    }
+    return length;
+}
+
+fn len_s(s: str) -> i64 {
+    mut length = 0;
+    cpp {
+        length = s.size();
+    }
+    return length;
+}
