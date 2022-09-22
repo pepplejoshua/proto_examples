@@ -1,0 +1,15 @@
+fn main() {
+    for c in "Joshua Pepple" {
+        cpp {
+            cout << c << endl;
+        }
+    }
+
+    mut sum = 0;
+    for n in [1, 2, 3, 4, 5] {
+        sum += n;
+    }
+    cpp {
+        cout << "sum: " << sum << endl;
+    }
+}
