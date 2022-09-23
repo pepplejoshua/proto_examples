@@ -4,10 +4,6 @@ struct Row {
     chars: [char],
 }
 
-fn add_to_row(r: &Row, c: char) {
-    append(&r.chars, c);
-}
-
 fn show_row(r: &Row) {
     for c in r.chars {
         cpp {

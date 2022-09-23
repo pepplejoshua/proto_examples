@@ -35,7 +35,7 @@ fn make_boardtile_s(s: str) -> BoardTile {
     }
     for mut i = 0; i < len_s(s); i += 3 {
         mut r = Row { chars: [s[i], s[i+1], s[i+2]] };
-        append_r(&(b.rows), r);
+        append_r(&b.rows, r);
     }
     b
 }
