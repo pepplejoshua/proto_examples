@@ -1,0 +1,26 @@
+fn not_mut_add(i: i64) -> i64 {
+    i + 1
+}
+
+fn mut_add(mut i: &i64) {
+    i += 1;
+}
+
+fn main() {
+    let a = 1;
+    not_mut_add(a);
+    cpp {
+        cout << "a is still: " << a << endl;
+    }
+
+    // mut_add(a); // this should fail and does
+    mut b = 3;
+    not_mut_add(b);
+    cpp {
+        cout << "b is still: " << b << endl;
+    }
+    mut_add(&b);
+    cpp {
+        cout << "b is now: " << b << endl;
+    }
+}
