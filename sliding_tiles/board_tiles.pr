@@ -16,13 +16,13 @@ fn len_b(arr: &[BoardTile]) -> i64 {
     return length;
 }
 
-fn append_r(arr: &[Row], r: Row) {
+fn append_r(mut arr: &[Row], r: Row) {
     cpp {
         arr.push_back(r);
     }
 }
 
-fn append_b(arr: &[BoardTile], b: BoardTile) {
+fn append_b(mut arr: &[BoardTile], b: BoardTile) {
     cpp {
         arr.push_back(b);
     }
@@ -55,7 +55,7 @@ fn find_char(repr: str, c: char) -> i64 {
     return -1;
 }
 
-fn generate_by_swapping(original: str, index_a: i64, index_b: i64) -> str {
+fn generate_by_swapping(mut original: str, index_a: i64, index_b: i64) -> str {
     mut temp = original[index_a];
     original[index_a] = original[index_b];
     original[index_b] = temp;
@@ -120,7 +120,7 @@ fn display(b: &BoardTile) {
     }
 }
 
-fn next_config(b: &BoardTile) -> [BoardTile] {
+fn next_config(mut b: &BoardTile) -> [BoardTile] {
     mut new_tiles = [BoardTile;];
 
     mut blank = find_char(b.repr, '0');

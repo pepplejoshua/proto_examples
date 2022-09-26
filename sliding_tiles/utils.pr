@@ -1,10 +1,10 @@
-fn append(arr: &[char], c: char) {
+fn append(mut arr: &[char], c: char) {
     cpp {
         arr.push_back(c);
     }
 }
 
-fn len(arr: &[char]) -> i64 {
+fn len(mut arr: [char]) -> i64 {
     mut length = 0;
     cpp {
         length = arr.size();
