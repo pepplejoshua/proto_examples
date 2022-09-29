@@ -28,7 +28,7 @@ fn display_output(index: i64, init: str, goal: str, solution: BoardTile) {
 
 fn main() {
     mut inits = [
-         "123405786",
+        "123405786",
         "123745086",
         "123480765",
         "512630478",
