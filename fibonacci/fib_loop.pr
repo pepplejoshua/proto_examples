@@ -16,10 +16,6 @@ fn fib_loop(n: i64) -> i64 {
 }
 
 fn main() -> i64 {
-    let number = if true {
-        64
-    } else {
-        32
-    };
+    let number = 10;
     fib_loop(number)
 }
