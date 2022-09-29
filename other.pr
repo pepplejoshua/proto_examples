@@ -1,3 +1,0 @@
-fn o_mut_add(mut a: i64, mut b: i64) -> i64 {
-    a + b
-}

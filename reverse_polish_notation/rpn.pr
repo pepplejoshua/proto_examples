@@ -1,0 +1,68 @@
+use core::io::[read_str, write_prompt, writeln];
+use core::strings::[split_str, is_number, to_i64, wrap_in_green, wrap_in_red];
+use core::arrays::[len_i64, last, pop_back, append_i64];
+
+fn calculator() {
+    mut stack = [i64;];
+    write_prompt("enter an expression");
+    let input = read_str();
+    let tokens = split_str(input);
+
+    mut count = -1;
+    for token in tokens {
+        count += 1;
+        if token == "-" { // perform subtraction
+            let rhs = last(stack);
+            pop_back(&stack);
+            let lhs = last(stack);
+            pop_back(&stack);
+            let n_val = lhs - rhs;
+            append_i64(&stack, n_val);
+        } else if token == "+" { // perform addition
+            let rhs = last(stack);
+            pop_back(&stack);
+            let lhs = last(stack);
+            pop_back(&stack);
+            let n_val = lhs + rhs;
+            append_i64(&stack, n_val);
+        } else if token == "*" { // perform multiplication
+             let rhs = last(stack);
+            pop_back(&stack);
+            let lhs = last(stack);
+            pop_back(&stack);
+            let n_val = lhs * rhs;
+            append_i64(&stack, n_val);
+        } else if token == "/" { // perform division
+            let rhs = last(stack);
+            if rhs == 0 {
+                writeln(wrap_in_red("Division by Zero is not allowed."));
+                return;
+            }
+            pop_back(&stack);
+            let lhs = last(stack);
+            pop_back(&stack);
+            let n_val = lhs - rhs;
+            append_i64(&stack, n_val);
+        } else { 
+            if is_number(token) { // check for number
+                let num = to_i64(token);
+                append_i64(&stack, num);
+            } else { // show error
+                writeln(wrap_in_red("Unexpected token: ") + token + ".");
+                return;
+            }
+        }
+    }
+    let stack_len = len_i64(stack);
+    if stack_len != 1 {
+        writeln(wrap_in_red("Invalid expression."));
+        return;
+    }
+    cpp { cout << wrap_in_green("The result of the expression is: ") << stack[0] << endl; }
+}
+
+fn main() {
+    while true {
+        calculator();
+    }
+}
