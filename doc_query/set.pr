@@ -1,0 +1,8 @@
+struct WordSet {
+    path: str,
+    words: [str],
+}
+
+fn append_set(mut arr: &[WordSet], set: WordSet) {
+    cpp { arr.push_back(set); }
+}

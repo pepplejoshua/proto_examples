@@ -1,0 +1,117 @@
+use core::io::[read_str, read_file_to_str, write_prompt, writeln, write];
+use core::strings::[split_str, wrap_in_green, wrap_in_red, to_lowercase];
+use core::arrays::[append_str, append_i64, len_str, len_i64];
+use set::[WordSet, append_set];
+
+fn read_filenames() -> [str] {
+    mut files = [str;];
+    while true {
+        write_prompt(wrap_in_green("enter filename or .q to stop"));
+        let entry = read_str();
+        if entry == ".q" {
+            break;
+        }
+        append_str(&files, entry);
+    }
+    files
+}
+
+fn get_wordset_from_arr(file: str, content: [str]) -> WordSet {
+    mut words = [str;];
+
+    for e in content {
+        mut dup = false;
+        for w in words {
+            if w == to_lowercase(e) {
+                dup = true;
+                break;
+            }
+        } 
+        if not dup {
+            append_str(&words, to_lowercase(e));
+        }
+    }
+
+    let set = WordSet {
+        path: file,
+        words,
+    };
+    set
+}
+
+fn get_wordsets(files: [str]) -> [WordSet] {
+    mut wordsets = [WordSet;];
+    for file in files {
+        let content_arr = split_str(read_file_to_str(file));
+        append_set(&wordsets, get_wordset_from_arr(file, content_arr));
+    }
+    wordsets
+}
+
+fn compute_cosine_similarity(a: WordSet, b: WordSet) -> i64 {
+    mut intersect_count = 0;
+    for aw in a.words {
+        for bw in b.words {
+            if aw == bw {
+                intersect_count += 1;
+            }
+        }
+    }
+    let a_len = len_str(a.words);
+    let b_len = len_str(b.words);
+    mut sim = 0;
+    #include <cmath>
+    cpp {
+        auto sqrt_a = sqrt(a_len);
+        auto sqrt_b = sqrt(b_len);
+
+        auto val = intersect_count / (sqrt_a * sqrt_b);
+        sim = (int64_t) round(intersect_count);
+    }
+    sim
+}
+
+fn main() {
+    let files = read_filenames();
+    let file_sets = get_wordsets(files);
+
+    while true {
+        writeln("");
+        write_prompt(wrap_in_green("enter query or .q to exit"));
+        let input = read_str();
+        if input == ".q" {
+            break;
+        }
+        let query = split_str(input);
+
+        let q_set = get_wordset_from_arr("query", query);
+    
+        mut scores = [i64;];
+        for fs in file_sets {
+            let score = compute_cosine_similarity(fs, q_set);
+            append_i64(&scores, score);
+        }
+    
+        mut max = 0;
+        mut matched_file = "";
+        for mut i = 0; i < len_i64(scores); i += 1 {
+            let file = files[i];
+            let score = scores[i];
+            if score >= max && score != 0 {
+                write(" -=>" + file, false);
+                cpp { cout << ": " << score << endl;} 
+                max = score;
+                matched_file = file;
+            }
+            
+        }
+        
+        if max > 0 {
+            cpp {
+                cout << wrap_in_green(matched_file + " matches the query best with a score of ") << max << endl;
+            }
+        } else {
+            cpp { cout << wrap_in_red("couldn't match file against query.") << endl; }
+        }
+    }
+}
