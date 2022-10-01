@@ -1,0 +1,31 @@
+use core::io;
+struct Test {
+    a: i64,
+    b: i64,
+
+    pub fn make_test(a_n: i64, b_n: i64) -> Test {
+        Test { a: a_n, b: b_n }
+    }
+
+    pub fn add(self: &Test) -> i64 {
+        self.private_add()
+    }
+
+    pub fn identity(self: &Test, n: i64) -> i64 {
+        Test::_identity(n)
+    }
+
+    fn private_add(self: &Test) -> i64 {
+        self.a + self.b
+    }
+
+    fn _identity(a_n: i64) -> i64 {
+        a_n
+    }
+}
+
+fn main() -> i64 {
+    let a = Test::make_test(3, 3);
+    io::writeln("1234");
+    a.add()
+}
