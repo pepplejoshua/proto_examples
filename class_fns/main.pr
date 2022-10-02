@@ -1,4 +1,4 @@
-use core::io;
+use io;
 struct Test {
     a: i64,
     b: i64,

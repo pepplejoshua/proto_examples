@@ -1,0 +1,22 @@
+use testing::assert_true;
+use strings::from_i64;
+
+struct Test {
+    name: str,
+    age: i64,
+
+    pub fn init(n: str, a: i64) -> Test {
+        Test { age: a, name: n  }
+    }
+}
+
+fn main() {
+    let a = Test::init("joshua", 23);
+    cpp { cout << a << endl; }
+}
+
+test "TestInit" {
+    let v = Test::init("test", 32);
+    assert_true(v.name == "test", "v.name (" + v.name + ") is not equal to test.");
+    assert_true(v.age == 30, "v.age (" + from_i64(v.age) + ") is not equal to 30.");
+}

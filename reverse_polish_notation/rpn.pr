@@ -1,6 +1,6 @@
-use core::io::[read_str, write_prompt, writeln];
-use core::strings::[split_str, is_number, to_i64, wrap_in_green, wrap_in_red];
-use core::arrays::[len_i64, last, pop_back, append_i64];
+use io::[read_str, write_prompt, writeln];
+use strings::[split_str, is_number, to_i64, wrap_in_green, wrap_in_red];
+use arrays::[len_i64, last, pop_back, append_i64];
 
 fn calculator() {
     mut stack = [i64;];

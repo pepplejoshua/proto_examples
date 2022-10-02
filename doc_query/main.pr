@@ -1,6 +1,6 @@
-use core::io::[read_str, read_file_to_str, write_prompt, writeln, write];
-use core::strings::[split_str, wrap_in_green, wrap_in_red, to_lowercase];
-use core::arrays::[append_str, append_i64, len_str, len_i64];
+use io::[read_str, read_file_to_str, write_prompt, writeln, write];
+use strings::[split_str, wrap_in_green, wrap_in_red, to_lowercase];
+use arrays::[append_str, append_i64, len_str, len_i64];
 use set::[WordSet, append_set];
 
 fn read_filenames() -> [str] {
