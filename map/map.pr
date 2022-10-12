@@ -1,0 +1,148 @@
+use testing::panic;
+use io::[writeln, write];
+use strings::wrap_in_red;
+
+fn len(arr: [(str, i64)]) -> i64 {
+    mut size = 0;
+    cpp { size = arr.size(); }
+    size
+}
+
+// struct Node {
+//     key: str,
+//     value: i64,
+
+//     pub 
+// }
+
+struct Map {
+    items: [(str, i64)],
+
+    pub fn make() -> Map {
+        Map { items: [(str, i64);] }
+    }
+
+    pub fn insert(mut self: &Map, key: str, val: i64) {
+        let new_entry = (key, val);
+        if len(items) == 0 {
+            cpp { items.push_back(new_entry); }
+            return;
+        }
+
+        let last = items[len(items)-1];
+        if key > last.0 {
+            cpp { items.push_back(new_entry); }
+            return;
+        } else if key == last.0 {
+            items[len(items)-1] = new_entry;
+            return;
+        }
+
+        let bundle = contains(key);
+        if bundle.0 { // it exists
+            items[bundle.1] = new_entry;
+            return;
+        } else {
+            mut low = 0;
+            mut high = len(items) - 1;
+            while high >= low {
+                let mid = (low + high) / 2;
+                let prev = mid - 1;
+                let next = mid + 1;
+
+                let below_0 = prev < 0;
+                let past_end = next >= len(items);
+
+                let mid_key = items[mid].0;
+
+                if mid_key > key {
+                    // check if prev is a valid index and 
+                    // then check if prev's key is less than
+                    // key, if it is, then we have the location to
+                    // insert at, which is mid
+                    if not below_0 {
+                        let prev_key = items[prev].0;
+                        if key >= prev_key {
+                            cpp { items.emplace(items.begin() + mid, new_entry); }
+                            return;
+                        } else {
+                            high = mid - 1;
+                        }
+                    } else {
+                        // this key is smaller than everything in the 
+                        // array so we need to insert at the 0th, location
+                        cpp { items.emplace(items.begin(), new_entry); }
+                        return;
+                    }
+                } else if mid_key < key {
+                    // check if next is a valid index and 
+                    // then check if next's key is greater than
+                    // key, if it is, then we have the location to
+                    // insert at, which is mid
+                    if not past_end {
+                        let next_key = items[next].0;
+                        if key <= next_key {
+                            cpp { items.emplace(items.begin() + next, new_entry); }
+                            return;
+                        } else {
+                            low = mid + 1;
+                        }
+                    } else {
+                        // there's no other location to insert at,
+                        // so, insert at the last location in the array.
+                        cpp { items.emplace(items.begin() + (len(items) - 1), new_entry); }
+                        return;
+                    }
+                } 
+            } 
+        }
+    }
+
+    pub fn contains(self: &Map, key: str) -> (bool, i64) {
+        mut low = 0;
+        mut high = len(items) - 1;
+
+        while high >= low {
+            let mid = (low + high) / 2;
+            let mid_key = items[mid].0;
+            if key == mid_key {
+                return (true, mid);
+            } else if key > mid_key {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        } 
+        return (false, -1);
+    }
+
+    pub fn at(self: &Map, key: str) -> i64 {
+        mut low = 0;
+        mut high = len(items) - 1;
+
+        while high >= low {
+            let mid = (low + high) / 2;
+            let mid_key = items[mid].0;
+            if key == mid_key {
+                return items[mid].1;
+            } else if key > mid_key {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        } 
+        writeln(wrap_in_red(key + " doesn't exist in the Map."));
+        -1
+    }
+
+    pub fn is_empty(self: &Map) -> bool {
+        len(items) == 0
+    }
+
+    pub fn print(self: &Map) {
+        for entry in items {
+            write(entry.0 + " => ", false);
+            cpp { cout << get<1>(entry) << endl; }
+        }
+    }
+}

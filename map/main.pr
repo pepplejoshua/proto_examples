@@ -1,0 +1,14 @@
+use map::Map;
+
+fn main() -> bool {
+    mut map = Map::make();
+
+    map.insert("j", 1);
+    map.insert("j", 4);
+    map.insert("joshua", 23);
+    map.insert("chidera", 21);
+    map.insert("henok", 25);
+    map.print();
+
+    map.contains("henok").0
+}
