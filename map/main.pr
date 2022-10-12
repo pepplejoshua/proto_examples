@@ -10,5 +10,10 @@ fn main() -> bool {
     map.insert("henok", 25);
     map.print();
 
+    cpp { cout << endl; }
+    map.erase("henok");
+    map.erase("j");
+
+    map.print();
     map.contains("henok").0
 }
